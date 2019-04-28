@@ -45,6 +45,14 @@ app.get('/events/:id', (req, res) => {
   });
 })
 
+app.get('/events/:id/edit', (req, res) => {
+  models.Event.findByPk(req.params.id).then((event) => {
+    res.render('events-edit', { event: event });
+  }).catch((err) => {
+    console.log(err.message);
+  })
+});
+
 const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
