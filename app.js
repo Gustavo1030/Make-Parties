@@ -1,6 +1,12 @@
 const express = require('express')
 const app = express()
 
+const bodyParser = require('body-parser');
+
+const models = require('./db/models');
+
+app.use(bodyParser.urlencoded({ extended: true }));
+
 var exphbs = require('express-handlebars');
 
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
@@ -14,7 +20,29 @@ var events = [
 ]
 
 app.get('/', (req, res) => {
-  res.render('events-index', { events: events });
+  models.Event.findAll({ order: [['createdAt', 'DESC']] }).then(events => {
+    res.render('events-index', { events: events });
+  })
+})
+
+app.get('/events/new', (req, res) => {
+  res.render('events-new', {});
+})
+
+app.post('/events', (req, res) => {
+  models.Event.create(req.body).then(event => {
+    res.redirect(`/events/${event.id}`);
+  }).catch((err) => {
+    console.log(err)
+  });
+})
+
+app.get('/events/:id', (req, res) => {
+  models.Event.findByPk(req.params.id).then((event) => {
+    res.render('events-show', { event: event })
+  }).catch((err) => {
+    console.log(err.message);
+  });
 })
 
 const port = process.env.PORT || 3000;
