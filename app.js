@@ -45,6 +45,15 @@ app.get('/events/:id', (req, res) => {
   });
 })
 
+app.delete('/events/:id', (req, res) => {
+  models.Event.findByPk(req.params.id).then(event => {
+    event.destroy();
+    res.redirect(`/`);
+  }).catch((err) => {
+    console.log(err);
+  });
+})
+
 app.get('/events/:id/edit', (req, res) => {
   models.Event.findByPk(req.params.id).then((event) => {
     res.render('events-edit', { event: event });
