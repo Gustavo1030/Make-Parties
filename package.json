@@ -13,6 +13,8 @@
     "body parser": "^1.18.3",
     "express": "^4.16.4",
     "express-handlebars": "^3.0.2",
+    "method-override": "^3.0.0",
+    "moment": "^2.24.0",
     "pg-hstore": "^5.3.5",
     "sequelize": "^5.3.9",
     "sequelize-cli": "^5.4.0"
